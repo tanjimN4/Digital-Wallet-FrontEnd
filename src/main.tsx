@@ -1,10 +1,18 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Provider as ReduxProvider } from "react-redux"
+import { RouterProvider } from 'react-router'
 import './index.css'
-import App from './App.tsx'
+import { ThemeProvider } from './provider.tsx/theme-provider'
+import { store } from './redux/store'
+import { router } from './routes/route'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ReduxProvider store={store} >
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </ReduxProvider>
   </StrictMode>,
 )

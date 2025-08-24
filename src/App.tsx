@@ -7,9 +7,9 @@ function App() {
 
   return (
     <>
-    <CommonLayout>
-      <Outlet/>
-    </CommonLayout>
+      <CommonLayout>
+        <Outlet />
+      </CommonLayout>
     </>
   )
 }

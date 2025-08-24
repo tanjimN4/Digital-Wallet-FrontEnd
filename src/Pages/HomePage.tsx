@@ -1,8 +1,13 @@
+import Hero from "@/components/layout/Hero";
+import { HowItWorks } from "./HowItWorks";
+import { Testimonials } from "./Testimonials";
 
 const HomePage = () => {
     return (
         <div>
-            <h1>This is HomePage Component</h1>
+            <Hero />
+            <HowItWorks />
+            <Testimonials />
         </div>
     );
 };

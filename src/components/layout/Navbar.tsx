@@ -12,6 +12,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { role } from "@/constants/role"
+import { authApi, useLogoutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { useAppDispatch } from "@/redux/hook"
 import { Link } from "react-router"
 import { ModeToggle } from "./ModeToggle"
 
@@ -22,8 +25,30 @@ const navigationLinks = [
   { href: "/features", label: "Features" },
   { href: "/contact", label: "Contact" },
   { href: "/faq", label: "FAQ" },
+  { href: "/admin", label: "Dashboard", role: role.admin },
+  { href: "/admin", label: "Dashboard", role: role.superAdmin },
+  { href: "/user", label: "Dashboard", role: role.user },
+  { href: "/agent", label: "Dashboard", role: role.agent },
 ]
+
 export default function Navbar() {
+  const { data } = useUserInfoQuery(undefined);
+
+  const currentRole = data?.data?.role
+  console.log(currentRole);
+
+  const filteredLinks = navigationLinks.filter(link => {
+    if (!link.role) return true;
+    return link.role === currentRole;
+  });
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+  console.log(data);
+
+  const handleLogout = async () => {
+    await logout(undefined);
+    dispatch(authApi.util.resetApiState());
+  };
   return (
     <header className="border-b ">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -67,7 +92,7 @@ export default function Navbar() {
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
+                  {filteredLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink
                         href={link.href}
@@ -83,18 +108,16 @@ export default function Navbar() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
               <div className="flex gap-2">
                 <Logo />
                 <h1 className="text-xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-400 to-blue-900">
                   𝓕𝓲𝓼𝓽 𝓟𝓪𝔂
                 </h1>
               </div>
-            </a>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
+                {filteredLinks.map((link, index) => (
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
                       href={link.href}
@@ -111,9 +134,20 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <Button asChild className="text-sm">
-            <Link to="/login">Login</Link>
-          </Button>
+          {data?.data?.email && (
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="text-sm"
+            >
+              Logout
+            </Button>
+          )}
+          {!data?.data?.email && (
+            <Button asChild className="text-sm">
+              <Link to="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>

@@ -26,7 +26,7 @@ export const Testimonials = () => {
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-foreground">
           What Our Users Say
         </h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 mx-2">
           {reviews.map((r, idx) => (
             <div
               key={idx}

@@ -1,6 +1,8 @@
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import type { ILogin } from "@/types/auth.type";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 import {
     Form,
@@ -13,17 +15,23 @@ import {
 import { Input } from "../ui/input";
 
 const LoginFrom = () => {
-    const [login]=useLoginMutation();
+    const [login] = useLoginMutation();
+    const navigate = useNavigate()
     const form = useForm<ILogin>();
-    const onSubmit: SubmitHandler<ILogin> = (data) => {
+    const onSubmit: SubmitHandler<ILogin> = async (data) => {
         try {
-            const res=login(data).unwrap();
-            console.log(res);
+            const res = await login(data).unwrap();
+            toast.success("User logged in successfully");
+            navigate("/")
         } catch (error) {
-            console.log(error);
-            
+            if (error?.data?.message === "User is authenticated with Google") {
+                toast.error(
+                    "This account is registered with Google. Please login using Google."
+                );
+            } else {
+                toast.error(error?.data?.message || "Login failed ❌");
+            }
         }
-        console.log(data);
     };
     return (
         <Form {...form}>

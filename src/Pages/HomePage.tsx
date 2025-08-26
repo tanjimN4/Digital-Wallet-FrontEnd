@@ -1,5 +1,6 @@
 import Hero from "@/components/layout/Hero";
 import { HowItWorks } from "./HowItWorks";
+import { SecurityTrust } from "./SecurityTrust";
 import { Testimonials } from "./Testimonials";
 
 const HomePage = () => {
@@ -8,6 +9,7 @@ const HomePage = () => {
             <Hero />
             <HowItWorks />
             <Testimonials />
+            <SecurityTrust />
         </div>
     );
 };

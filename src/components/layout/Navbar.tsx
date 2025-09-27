@@ -27,13 +27,12 @@ const navigationLinks = [
   { href: "/faq", label: "FAQ" },
   { href: "/admin", label: "Dashboard", role: role.admin },
   { href: "/admin", label: "Dashboard", role: role.superAdmin },
-  { href: "/user", label: "Dashboard", role: role.user },
-  { href: "/agent", label: "Dashboard", role: role.agent },
+  { href: "/user", label: "Dashboard", role: role.user},
+  { href: "/user", label: "Dashboard", role: role.agent },
 ]
 
 export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
-
   const currentRole = data?.data?.role
   console.log(currentRole);
 

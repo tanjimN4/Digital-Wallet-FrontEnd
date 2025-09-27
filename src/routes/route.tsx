@@ -13,75 +13,36 @@ import { generateRoutes } from "@/utils/generateRoutes";
 import { withAuth } from "@/utils/withAuth";
 import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
-import { agentSidebarItems } from "./agentSidebarItems";
-import { userSidebarItems } from "./userSidebarItems";
-
+import { userSidebarItems } from "./userSidebarItems"; // function
 
 export const router = createBrowserRouter([
-    {
-        path: '/',
-        Component: App,
-        children: [
-            {
-                path: '/',
-                Component: HomePage,
-            },
-            {
-                path: '/about',
-                Component: About,
-            },
-            {
-                path: '/features',
-                Component: Features,
-            },
-            {
-                path: '/contact',
-                Component: Contact,
-            },
-            {
-                path: '/faq',
-                Component: Faq,
-            }
-        ]
-    },
-    {
-        path: "/admin",
-        Component: withAuth(DashboardLayout, role.superAdmin as TRole),
-        children: [
-            {
-                index: true,
-                element: <Navigate to="/admin/users" />,
-            },
-            ...generateRoutes(adminSidebarItems),
-        ],
-    },
-    {
-        path: "/user",
-        Component: withAuth(DashboardLayout, role.user as TRole),
-        children: [
-            {
-                index: true,
-                element: <Navigate to="/user/profile" />,
-            },
-            ...generateRoutes(userSidebarItems)],
-    },
-    {
-        path: "/agent",
-        Component: withAuth(DashboardLayout, role.agent as TRole),
-        children: [
-            {
-                index: true,
-                element: <Navigate to="transaction/send-money" />,
-            },
-            ...generateRoutes(agentSidebarItems),
-        ],
-    },
-    {
-        path: '/login',
-        Component: Login,
-    },
-    {
-        path: '/register',
-        Component: Register,
-    }
-])
+  {
+    path: '/',
+    Component: App,
+    children: [
+      { path: '/', Component: HomePage },
+      { path: '/about', Component: About },
+      { path: '/features', Component: Features },
+      { path: '/contact', Component: Contact },
+      { path: '/faq', Component: Faq },
+    ]
+  },
+  {
+    path: "/admin",
+    Component: withAuth(DashboardLayout, role.superAdmin as TRole),
+    children: [
+      { index: true, element: <Navigate to="/admin/users" /> },
+      ...generateRoutes(adminSidebarItems), // static
+    ],
+  },
+  {
+    path: "/user",
+    Component: withAuth(DashboardLayout, [role.user, role.agent, role.admin] as TRole[]),
+    children: [
+      { index: true, element: <Navigate to="/user/profile" /> },
+      ...generateRoutes(userSidebarItems), // function passed, will be called inside DashboardLayout
+    ],
+  },
+  { path: '/login', Component: Login },
+  { path: '/register', Component: Register },
+]);

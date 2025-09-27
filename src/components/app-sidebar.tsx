@@ -1,6 +1,10 @@
-import * as React from "react"
+import Logo from "@/assets/icons/Logo";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import type { ISidebarItem } from "@/types";
+import { getSidebarItems } from "@/utils/getSidebarItems";
+import * as React from "react";
+import { Link } from "react-router";
 
-import Logo from "@/assets/icons/Logo"
 import {
   Sidebar,
   SidebarContent,
@@ -12,32 +16,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
-import { getSidebarItems } from "@/utils/getSidebarItems"
-import { Link } from "react-router"
+} from "@/components/ui/sidebar";
 
+export const AppSidebar = (props: React.ComponentProps<typeof Sidebar>) => {
+  const { data: userData } = useUserInfoQuery(undefined);
+  const sidebarItems: ISidebarItem[] = getSidebarItems(userData?.data);
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const {data :userData} = useUserInfoQuery(undefined);
-// This is sample data.
-const data = {
-  navMain: getSidebarItems(userData?.data?.role),
-}
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-       <Logo />
+        <Logo />
       </SidebarHeader>
+
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+        {sidebarItems.map((section) => (
+          <SidebarGroup key={section.title}>
+            <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
+                {section.items.map((item) => (
+                  <SidebarMenuItem key={item.url}>
                     <SidebarMenuButton asChild>
                       <Link to={item.url}>{item.title}</Link>
                     </SidebarMenuButton>
@@ -48,7 +46,8 @@ const data = {
           </SidebarGroup>
         ))}
       </SidebarContent>
+
       <SidebarRail />
     </Sidebar>
-  )
-}
+  );
+};

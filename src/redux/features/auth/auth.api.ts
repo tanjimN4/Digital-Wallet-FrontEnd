@@ -29,7 +29,18 @@ export const authApi = baseApi.injectEndpoints({
             }),
             providesTags: ["USER"],
         }),
+        resetPassword: builder.mutation<any, { id: string; resetData: any }>({
+            query: ({resetData }) => ({
+                url: `auth/reset-password`,
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: resetData
+            }),
+        }),
+
     })
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation , useUserInfoQuery} = authApi
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useUserInfoQuery , useResetPasswordMutation} = authApi

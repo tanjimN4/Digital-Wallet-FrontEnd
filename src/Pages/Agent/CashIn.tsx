@@ -2,24 +2,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCashInMutation } from "@/redux/features/auth/agent.api";
+import { useMyTransactionQuery } from "@/redux/features/auth/user.api";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 interface ICashInForm {
   email: string;
-  amount: number;
+  balance: number;
 }
 
 const CashIn = () => {
   const [cashIn, { isLoading }] = useCashInMutation();
+  const { refetch } = useMyTransactionQuery();
   const { register, handleSubmit, reset } = useForm<ICashInForm>();
 
   const onSubmit = async (data: ICashInForm) => {
     try {
+      console.log(data)
+      
       await cashIn(data).unwrap();
       toast.success("Money sent to user successfully!");
       reset();
+      refetch()
     } catch (err: any) {
+      console.log(err);
+      
       toast.error(err?.data?.message || "Transaction failed");
     }
   };
@@ -41,7 +48,7 @@ const CashIn = () => {
           <Input
             type="number"
             placeholder="Enter amount"
-            {...register("amount", {
+            {...register("balance", {
               required: "Amount is required",
               valueAsNumber: true,
               min: { value: 1, message: "Amount must be greater than 0" },

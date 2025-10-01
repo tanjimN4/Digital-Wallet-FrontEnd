@@ -37,7 +37,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/user",
-    Component: withAuth(DashboardLayout, [role.user, role.agent, role.admin] as TRole[]),
+    Component: withAuth(DashboardLayout, [role.user, role.agent, role.admin,role.superAdmin] as TRole[]),
     children: [
       { index: true, element: <Navigate to="/user/profile" /> },
       ...generateRoutes(userSidebarItems), // function passed, will be called inside DashboardLayout

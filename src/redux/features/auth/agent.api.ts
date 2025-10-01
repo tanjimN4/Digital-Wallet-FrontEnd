@@ -7,7 +7,8 @@ export const authApi = baseApi.injectEndpoints({
                 url: "/agent/cash-in",
                 method: "POST",
                 data: cashIN
-            })
+            }),
+            invalidatesTags: ["USER"]
         }),
     })
 });

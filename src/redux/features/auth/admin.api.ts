@@ -9,13 +9,20 @@ export const authApi = baseApi.injectEndpoints({
                 params
             }),
             providesTags: (result) =>
-        result
-            ? [
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  ...result.data.map((user: any) => ({ type: "USER" as const, id: user._id })),
-                  { type: "USER", id: "LIST" },
-              ]
-            : [{ type: "USER", id: "LIST" }],
+                result
+                    ? [
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        ...result.data.map((user: any) => ({ type: "USER" as const, id: user._id })),
+                        { type: "USER", id: "LIST" },
+                    ]
+                    : [{ type: "USER", id: "LIST" }],
+        }),
+        allTransactions: builder.query({
+            query: (params) => ({
+                url: "transaction/all-transaction",
+                method: "GET",
+                params,
+            }),
         }),
         blockUser: builder.mutation({
             query: (id: string) => ({
@@ -24,7 +31,7 @@ export const authApi = baseApi.injectEndpoints({
                 data: { isBlocked: "BLOCKED" },
                 headers: { "Content-Type": "application/json" },
             }),
-             invalidatesTags: [{ type: "USER", id: "LIST" }],
+            invalidatesTags: [{ type: "USER", id: "LIST" }],
         }),
         unblockUser: builder.mutation({
             query: (id: string) => ({
@@ -35,7 +42,32 @@ export const authApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: [{ type: "USER", id: "LIST" }],
         }),
+        updateAgentStatus: builder.mutation({
+            query: (payload) => {
+                return {
+                    url: `/agent/agent-approval-reject-status`,
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    data: payload,
+                };
+            },
+            invalidatesTags: ["USER", "Users"],
+        }),
+        updateRole: builder.mutation({
+            query: ({ id, role }: { id: string; role: string }) => ({
+                url: `user/${id}`,
+                method: "PATCH",
+                data: { role },
+                headers: { "Content-Type": "application/json" },
+            }),
+            invalidatesTags: [{ type: "USER", id: "LIST" }],
+        }),
+
+
+
     }),
 });
 
-export const { useUsersQuery, useBlockUserMutation, useUnblockUserMutation } = authApi;
+export const {useAllTransactionsQuery, useUsersQuery, useBlockUserMutation, useUnblockUserMutation, useUpdateAgentStatusMutation, useUpdateRoleMutation } = authApi;

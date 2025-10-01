@@ -1,9 +1,10 @@
+import Users from "@/Pages/Admin/Users";
 import CashIn from "@/Pages/Agent/CashIn";
 import CashOut from "@/Pages/Agent/CashOut";
-import DepositMoney from "@/Pages/User/DepositMoney";
 import Profile from "@/Pages/User/Profile";
 import SendMoney from "@/Pages/User/SendMoney";
 import Transactions from "@/Pages/User/Transactions";
+import TransactionsAll from "@/Pages/Admin/TransactionsAll";
 import WithdrawMoney from "@/Pages/User/WithdrawMoney";
 import type { ISidebarItem, IUser } from "@/types";
 
@@ -15,7 +16,6 @@ export const getSidebarItems = (user?: IUser): ISidebarItem[] => {
       title: "Wallet",
       items: [
         { title: "Send Money", url: "/user/transaction/send-money", component: SendMoney },
-        { title: "Deposit Money", url: "/user/transaction/deposit", component: DepositMoney },
         { title: "Withdraw Money", url: "/user/transaction/withdraw", component: WithdrawMoney },
         { title: "Transaction History", url: "/user/transaction/history", component: Transactions },
       ],
@@ -34,7 +34,16 @@ export const getSidebarItems = (user?: IUser): ISidebarItem[] => {
       title: "Agent",
       items: [
         { title: "Cash In", url: "/user/cashIn", component: CashIn },
-        { title: "Cash Out", url: "/user/cashOut", component: CashOut },
+        // { title: "Cash Out", url: "/user/cashOut", component: CashOut },
+      ],
+    });
+  }
+  if (user.role === "ADMIN" || user.role === "SUPER_ADMIN") {
+    sidebar.push({
+      title: "Dashboard",
+      items: [
+        { title: "Users", url: "/admin/users", component: Users },
+        { title: "Transection", url: "/admin/Transection", component: TransactionsAll},
       ],
     });
   }

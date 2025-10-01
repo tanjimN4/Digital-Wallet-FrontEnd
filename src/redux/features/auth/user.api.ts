@@ -51,7 +51,15 @@ export const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["USER"],
     }),
+    userEmailRole: builder.query<any, void>({
+      query: () => ({
+        url: "user/getemailrole",
+        method: "GET",
+      }),
+      providesTags: ["USER"],
+    }),
   }),
 });
 
-export const { useSendMoneyMutation, useMyTransactionQuery, useDepositMoneyMutation, useCashOutMutation, useUpdateUserMutation } = authApi;
+
+export const { useSendMoneyMutation, useMyTransactionQuery, useDepositMoneyMutation, useCashOutMutation, useUpdateUserMutation,useUserEmailRoleQuery } = authApi;

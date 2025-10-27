@@ -85,7 +85,7 @@ const SendMoney = () => {
           {!isEmailRoleLoading && (
             <ul className="border rounded-lg p-3 max-h-40 overflow-y-auto text-sm space-y-1">
               {filteredUsers.length > 0 ? (
-                filteredUsers.map((user, idx) => (
+                filteredUsers.map((user: { email: string }, idx: number) => (
                   <li
                     key={idx}
                     className="cursor-pointer hover:bg-gray-100 p-1 rounded"

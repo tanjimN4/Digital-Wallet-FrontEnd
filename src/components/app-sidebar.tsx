@@ -18,12 +18,19 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-export const AppSidebar = (props: React.ComponentProps<typeof Sidebar>) => {
+
+
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  sidebarItems?: ISidebarItem[];
+};
+
+export const AppSidebar = (props: AppSidebarProps) => {
+  const { sidebarItems: sidebarItemsProp, ...sidebarProps } = props;
   const { data: userData } = useUserInfoQuery(undefined);
-  const sidebarItems: ISidebarItem[] = getSidebarItems(userData?.data);
+  const sidebarItems: ISidebarItem[] = sidebarItemsProp ?? getSidebarItems(userData?.data);
 
   return (
-    <Sidebar {...props}>
+    <Sidebar {...sidebarProps}>
       <SidebarHeader>
         <Logo />
       </SidebarHeader>

@@ -8,7 +8,7 @@ import Transactions from "@/Pages/User/Transactions";
 import WithdrawMoney from "@/Pages/User/WithdrawMoney";
 import type { ISidebarItem, IUser } from "@/types";
 
-export const userSidebarItems = (user?: IUser): ISidebarItem[] => {
+export const userSidebarItems = (_user?: IUser): ISidebarItem[] => {
   const sidebar: ISidebarItem[] = [
     {
       title: "Wallet",

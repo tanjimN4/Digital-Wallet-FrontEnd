@@ -31,7 +31,7 @@ import {
 } from "@/redux/features/auth/admin.api";
 import { authApi } from "@/redux/features/auth/auth.api";
 import type { IUser } from "@/types";
-import { useUpdateUserMutation } from "@/redux/features/auth/user.api";
+
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -53,8 +53,8 @@ const Users = () => {
   const filteredUsers = useMemo(() => {
     if (!searchTerm) return users;
     return users.filter(
-      (user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user: IUser) =>
+        user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, users]);
@@ -199,7 +199,7 @@ const Users = () => {
           </TableHeader>
 
           <TableBody>
-            {filteredUsers.map((user) => (
+            {filteredUsers.map((user: any) => (
               <TableRow key={user._id}>
                 <TableCell>{user.name}</TableCell>
                 <TableCell className="truncate max-w-[220px]">{user.email}</TableCell>
@@ -235,7 +235,7 @@ const Users = () => {
                       <select
                         defaultValue=""
                         className="border rounded px-2 py-1 text-sm bg-blue-500 text-white"
-                        onChange={(e) => handleAgentStatusUpdate(user, e.target.value as "APPROVED" | "REJECT")}
+                        onChange={(e) => handleAgentStatusUpdate(user, e.target.value as "APPROVED" | "REJECTED")}
                       >
                         <option value="" disabled>
                           Select

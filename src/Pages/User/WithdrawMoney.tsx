@@ -46,14 +46,14 @@ const WithdrawMoney = () => {
 
   const onSubmit = async (data: WithdrawFormData) => {
     // check if email exists in agent list
-    const agentExists = onlyAgents.some(agent => agent.email === data.email);
+    const agentExists = onlyAgents.some((agent: { email: string; }) => agent.email === data.email);
     if (!agentExists) {
       toast.error("This agent does not exist!");
       return;
     }
 
     try {
-      await cashOut(data).unwrap();
+      await cashOut(data as any).unwrap();
       toast.success(`$${data.amount} Cash out successfully!`);
       setValue("amount", 0);
       setValue("email", "");
@@ -79,7 +79,7 @@ const WithdrawMoney = () => {
       {!isEmailRoleLoading && (
         <ul className="border rounded-md p-2 max-h-40 overflow-y-auto text-sm space-y-1">
           {filteredAgents.length > 0 ? (
-            filteredAgents.map((agent, idx) => (
+            filteredAgents.map((agent:any, idx:number) => (
               <li
                 key={idx}
                 className="cursor-pointer hover:bg-gray-100 p-1 rounded"

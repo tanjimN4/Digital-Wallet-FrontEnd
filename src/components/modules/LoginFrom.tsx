@@ -20,16 +20,18 @@ const LoginFrom = () => {
     const form = useForm<ILogin>();
     const onSubmit: SubmitHandler<ILogin> = async (data) => {
         try {
-            const res = await login(data).unwrap();
+            await login(data).unwrap();
             toast.success("User logged in successfully");
-            navigate("/")
+            navigate("/");
         } catch (error) {
-            if (error?.data?.message === "User is authenticated with Google") {
+            // Fix type to allow error.data access
+            const err = error as { data?: { message?: string } };
+            if (err?.data?.message === "User is authenticated with Google") {
                 toast.error(
                     "This account is registered with Google. Please login using Google."
                 );
             } else {
-                toast.error(error?.data?.message || "Login failed ❌");
+                toast.error(err?.data?.message || "Login failed ❌");
             }
         }
     };

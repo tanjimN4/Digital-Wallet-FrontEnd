@@ -105,7 +105,10 @@ export default function Profile() {
       if (!oldPassword || !newPassword) return;
       console.log(oldPassword, newPassword);
 
-      const res = await resetPass({ resetData: { oldPassword, newPassword } });
+      const res = await resetPass({
+        resetData: { oldPassword, newPassword },
+        id: ""
+      });
       console.log(res);
       if (res?.data?.success) {
         toast.success(res.data.message || "Password updated successfully");
